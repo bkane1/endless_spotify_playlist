@@ -63,6 +63,11 @@ if len(to_delete) > 0:
     to_add = len(to_delete)
     last_index = last_tracks_added['idx'].astype(int).max()
     tracks_to_add = album_df.loc[last_index+1:last_index+to_add]
+    
+    #make it truly endless by starting from the beginning once you reach the end
+    if (last_index+to_add) >= len(album_df):
+        tracks_to_add = pd.concat([tracks_to_add, album_df.loc[0:(last_index+to_add)%len(album_df)]],axis=0)
+        
     tracks_to_add_ls = tracks_to_add.track_id.tolist()
 
     #add those songs to your playlist 
